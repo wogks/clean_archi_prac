@@ -7,8 +7,7 @@ class GetNote {
 
   GetNote(this.repository);
 
-  Future<Note?> call (int id) async {
+  Future<Note?> call(int id) async {
     return await repository.getNoteById(id);
-    
   }
 }

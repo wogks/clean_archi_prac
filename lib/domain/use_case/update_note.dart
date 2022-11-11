@@ -7,5 +7,7 @@ class UpadateNote {
 
   UpadateNote(this.repository);
 
-  Future<Note> call 
+  Future<void> call(Note note) async {
+    await repository.updateNote(note);
+  }
 }
