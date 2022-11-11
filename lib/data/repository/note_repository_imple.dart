@@ -1,9 +1,9 @@
-import 'package:clean_archi_memo/data/data_source/note_db.dart';
+import 'package:clean_archi_memo/data/data_source/note_db_helper.dart';
 import 'package:clean_archi_memo/domain/model/note.dart';
 import 'package:clean_archi_memo/domain/repository/note_repository.dart';
 
 class NoteRepositoryImple implements NoteRepository {
-  final NoteDb db;
+  final NoteDbHelper db;
   NoteRepositoryImple(this.db);
 
   @override
