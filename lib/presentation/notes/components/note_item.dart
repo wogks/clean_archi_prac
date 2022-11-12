@@ -36,10 +36,15 @@ class NoteItem extends StatelessWidget {
               ],
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 8,
             right: 8,
-            child: Icon(Icons.delete),
+            child: GestureDetector(
+              child: const Icon(Icons.delete),
+              onTap: () {
+                onDeleteTap?.call();
+              },
+            ),
           ),
         ],
       ),

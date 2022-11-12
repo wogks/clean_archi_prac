@@ -1,3 +1,4 @@
+import 'package:clean_archi_memo/presentation/add_edit_note/add_edit_note_screen.dart';
 import 'package:clean_archi_memo/ui/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -18,26 +19,34 @@ class NotesScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddEditNoteScreen()),
+          );
+        },
         child: const Icon(Icons.add),
       ),
-      body: ListView(
-        children: [
-          NoteItem(
-              note: Note(
-            title: 'asd',
-            content: 'asd',
-            color: wisteria.value,
-            timestamp: 1,
-          )),
-          NoteItem(
-              note: Note(
-            title: '1',
-            content: '1',
-            color: skyBlue.value,
-            timestamp: 1,
-          ))
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            NoteItem(
+                note: Note(
+              title: 'asd',
+              content: 'asd',
+              color: wisteria.value,
+              timestamp: 1,
+            )),
+            NoteItem(
+                note: Note(
+              title: '1',
+              content: '1',
+              color: skyBlue.value,
+              timestamp: 1,
+            ))
+          ],
+        ),
       ),
     );
   }
