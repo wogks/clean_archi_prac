@@ -13,7 +13,7 @@ void main() {
     );
     final noteDbHelper = NoteDbHelper(db);
 
-    await noteDbHelper.insertNote(Note(
+    await noteDbHelper.insertNote(const Note(
       title: 'test',
       content: 'test',
       color: 1,
@@ -25,10 +25,7 @@ void main() {
     Note note = (await noteDbHelper.getNoteById(1))!;
     expect(note.id, 1);
 
-  
-    await noteDbHelper.updateNote(note.copyWith(
-      title: 'change'
-    ));
+    await noteDbHelper.updateNote(note.copyWith(title: 'change'));
 
     note = (await noteDbHelper.getNoteById(1))!;
     expect(note.title, 'change');

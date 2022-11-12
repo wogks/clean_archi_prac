@@ -1,4 +1,5 @@
-import 'package:clean_archi_memo/presentation/notes/main_screen.dart';
+import 'package:clean_archi_memo/presentation/notes/notes_screen.dart';
+import 'package:clean_archi_memo/ui/colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,10 +15,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+        backgroundColor: dartGray,
+        canvasColor: dartGray,
+        floatingActionButtonTheme:
+            Theme.of(context).floatingActionButtonTheme.copyWith(
+                  backgroundColor: Colors.white,
+                  foregroundColor: dartGray,
+                ),
+        appBarTheme: Theme.of(context).appBarTheme.copyWith(
+          backgroundColor: dartGray,
+        ),
       ),
-      home: const MyWidget(),
+      home: const NotesScreen(),
     );
   }
 }
-
