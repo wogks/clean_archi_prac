@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:clean_archi_memo/domain/repository/note_repository.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_event.dart';
+import 'package:clean_archi_memo/presentation/notes/notes_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/note.dart';
@@ -9,9 +10,14 @@ import '../../domain/model/note.dart';
 class NotesViewModel with ChangeNotifier {
   final NoteRepository repository;
 
+  NotesState _state = NotesState();
+  NotesState get state => _state;
+
 //로드 노트에서 가져오면 데이터를 저장할 공간이 필요
-  List<Note> _notes = [];
-  UnmodifiableListView<Note> get notes => UnmodifiableListView(_notes);
+//이 상태를 별도의 스테이트클라스로 정의(notes_state.dart)
+//스테이트클라스 만들었으니 니제 필요없음
+  // List<Note> _notes = []; 
+  // UnmodifiableListView<Note> get notes => UnmodifiableListView(_notes);
 
   Note? _recentlyDeletedNote;
 
@@ -21,15 +27,16 @@ class NotesViewModel with ChangeNotifier {
   void onEvent(NotesEvent event) {
     //when을 쓴다(freezed 제공)
     event.when(
-      loadNotes: _loadNotes,
-      deleteNote: _deleteNote,
-      restoreNote: () {},
-    );
+        loadNotes: _loadNotes,
+        deleteNote: _deleteNote,
+        restoreNote: _restoreNote);
   }
 
   Future<void> _loadNotes() async {
     List<Note> notes = await repository.getNotes();
-    _notes = notes;
+    _state = state.copyWith(
+      notes: notes
+    );
     notifyListeners();
   }
 
