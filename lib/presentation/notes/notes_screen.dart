@@ -21,26 +21,23 @@ class NotesScreen extends StatelessWidget {
         onPressed: () {},
         child: const Icon(Icons.add),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            NoteItem(
-                note: Note(
-              title: 'asd',
-              content: 'asd',
-              color: wisteria.value,
-              timestamp: 1,
-            )),
-            NoteItem(
-                note: Note(
-              title: '1',
-              content: '1',
-              color: skyBlue.value,
-              timestamp: 1,
-            ))
-          ],
-        ),
+      body: ListView(
+        children: [
+          NoteItem(
+              note: Note(
+            title: 'asd',
+            content: 'asd',
+            color: wisteria.value,
+            timestamp: 1,
+          )),
+          NoteItem(
+              note: Note(
+            title: '1',
+            content: '1',
+            color: skyBlue.value,
+            timestamp: 1,
+          ))
+        ],
       ),
     );
   }
