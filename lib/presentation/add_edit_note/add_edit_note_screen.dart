@@ -21,7 +21,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   final _contentController = TextEditingController();
   StreamSubscription? _streamSubscription;
 
-
   final List<Color> noteColors = [
     rosebud,
     primrose,
@@ -33,15 +32,24 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _contentController.text = widget.note!.content;
+    }
+    //로드되는 시간 필요
     Future.microtask(() {
-      final viewModel = context.read<AddEditNoteViewModel>();//이니스테이트 안에서는 read
+      final viewModel = context.read<AddEditNoteViewModel>(); //이니스테이트 안에서는 read
       _streamSubscription = viewModel.eventStream.listen((event) {
-        event.when(saveNote: (){
+        event.when(saveNote: () {
           Navigator.pop(context, true);
+        }, showSnackBart: (String message) {
+          final snackBar = SnackBar(content: Text(message));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         });
       });
     });
   }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -57,11 +65,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: () {
-          if (_titleController.text.isEmpty ||
-              _contentController.text.isEmpty) {
-            const snackBar = SnackBar(content: Text('제목이나 내용이 비어 있습니다'));
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
           viewModel.onEvent(AddEditNoteEvent.saveNote(
             //노트가 널이면 아이디가 널, 노트가 널이 아니면 노트의 아이디
             widget.note == null ? null : widget.note!.id,
