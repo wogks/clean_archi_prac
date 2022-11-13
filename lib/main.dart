@@ -1,9 +1,13 @@
+import 'package:clean_archi_memo/di/provider_setup.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_screen.dart';
 import 'package:clean_archi_memo/ui/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final providers = await getProviders();
+  runApp(MultiProvider(providers: providers, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,8 +28,8 @@ class MyApp extends StatelessWidget {
                   foregroundColor: dartGray,
                 ),
         appBarTheme: Theme.of(context).appBarTheme.copyWith(
-          backgroundColor: dartGray,
-        ),
+              backgroundColor: dartGray,
+            ),
       ),
       home: const NotesScreen(),
     );
