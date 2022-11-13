@@ -1,7 +1,6 @@
 import 'package:clean_archi_memo/ui/colors.dart';
 import 'package:flutter/material.dart';
 
-
 class AddEditNoteScreen extends StatefulWidget {
   const AddEditNoteScreen({super.key});
 
@@ -28,6 +27,8 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     illusion,
   ];
 
+  Color _color = rosebud;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +36,28 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
         child: const Icon(Icons.save),
         onPressed: () {},
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        color: skyBlue,
+      body: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 48),
+        color: _color,
         child: Column(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: noteColors
+                  .map((color) => InkWell(
+                      onTap: () {
+                        setState(() {
+                          _color = color;
+                        });
+                      },
+                      child: _buildBackgroundColor(
+                        color: color,
+                        selected: _color == color,
+                      )))
+                  .toList(),
+            ),
             TextField(
               controller: _titleController,
               maxLines: 1,
@@ -61,6 +79,28 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildBackgroundColor({required Color color, required bool selected}) {
+    return Container(
+      width: 48,
+      height: 48,
+      decoration: BoxDecoration(
+          color: color,
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 6,
+                spreadRadius: 1)
+          ],
+          border: selected
+              ? Border.all(
+                  color: Colors.black,
+                  width: 3,
+                )
+              : null),
     );
   }
 }
