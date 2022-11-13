@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:clean_archi_memo/domain/repository/note_repository.dart';
 import 'package:clean_archi_memo/presentation/add_edit_note/add_edit_note_event.dart';
+import 'package:clean_archi_memo/presentation/add_edit_note/add_edit_note_ui_event.dart';
+import 'package:clean_archi_memo/ui/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/note.dart';
@@ -7,8 +11,11 @@ import '../../domain/model/note.dart';
 class AddEditNoteViewModel with ChangeNotifier {
   final NoteRepository repository;
   //value = int
-  int _color = Colors.orange.value;
+  int _color = rosebud.value;
   int get color => _color;
+
+  final _eventController = StreamController<AddEditNoteUiEvent>.broadcast();
+  Stream<AddEditNoteUiEvent> get eventStream => _eventController.stream;
 
   AddEditNoteViewModel(this.repository);
 
@@ -44,5 +51,7 @@ class AddEditNoteViewModel with ChangeNotifier {
             timestamp: DateTime.now().microsecondsSinceEpoch),
       );
     }
+
+    _eventController.add(const AddEditNoteUiEvent.saveNote());
   }
 }

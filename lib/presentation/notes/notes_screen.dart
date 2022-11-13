@@ -1,8 +1,9 @@
 import 'package:clean_archi_memo/presentation/add_edit_note/add_edit_note_screen.dart';
-import 'package:clean_archi_memo/ui/colors.dart';
+import 'package:clean_archi_memo/presentation/notes/notes_event.dart';
+import 'package:clean_archi_memo/presentation/notes/notes_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../domain/model/note.dart';
 import 'components/note_item.dart';
 
 class NotesScreen extends StatelessWidget {
@@ -10,6 +11,8 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<NotesViewModel>();
+    final state = viewModel.state;
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -19,33 +22,21 @@ class NotesScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async{
+          bool? isSaved = await Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddEditNoteScreen()),
           );
+          if(isSaved != null && isSaved) {
+            viewModel.onEvent(const NotesEvent.loadNotes());
+          }
         },
         child: const Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
-          children: [
-            NoteItem(
-                note: Note(
-              title: 'asd',
-              content: 'asd',
-              color: wisteria.value,
-              timestamp: 1,
-            )),
-            NoteItem(
-                note: Note(
-              title: '1',
-              content: '1',
-              color: skyBlue.value,
-              timestamp: 1,
-            ))
-          ],
+          children: state.notes.map((note) => NoteItem(note: note)).toList(),
         ),
       ),
     );
