@@ -1,17 +1,16 @@
-import 'package:clean_archi_memo/domain/use_case/add_note_use_case.dart';
-import 'package:clean_archi_memo/domain/use_case/delete_note_use_case.dart';
 import 'package:clean_archi_memo/domain/use_case/use_cases.dart';
+import 'package:clean_archi_memo/domain/use_case/util/note_order.dart';
+import 'package:clean_archi_memo/domain/use_case/util/order_type.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_event.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/note.dart';
-import '../../domain/use_case/get_notes_use_case.dart';
 
 class NotesViewModel with ChangeNotifier {
  final UseCases useCases;
 
-  NotesState _state = const NotesState();
+  NotesState _state = const NotesState(notes: [],noteOrder: NoteOrderDate(OrderType.descending()));
   NotesState get state => _state;
 
 //로드 노트에서 가져오면 데이터를 저장할 공간이 필요
@@ -36,7 +35,7 @@ _loadNotes();
   }
 
   Future<void> _loadNotes() async {
-    List<Note> notes = await useCases.getnotes();
+    List<Note> notes = await useCases.getnotes(state.noteOrder);
     _state = state.copyWith(notes: notes);
     notifyListeners();
   }

@@ -1,15 +1,48 @@
 import 'package:clean_archi_memo/domain/model/note.dart';
 import 'package:clean_archi_memo/domain/repository/note_repository.dart';
+import 'package:clean_archi_memo/domain/use_case/util/note_order.dart';
 
 class GetnotesUseCase {
-
   final NoteRepository repository;
 
   GetnotesUseCase(this.repository);
 
-  Future<List<Note>> call () async {
+  Future<List<Note>> call(NoteOrder noteOrder) async {
     List<Note> notes = await repository.getNotes();
-    notes.sort((a, b) => -a.timestamp.compareTo(b.timestamp));
+    noteOrder.when(
+      title: (orderType) {
+        orderType.when(
+          ascending: () {
+          notes.sort((a, b) => a.title.compareTo(b.title));
+          },
+          descending: () {
+            notes.sort((a, b) => -a.title.compareTo(b.title));
+          },
+        );
+      },
+      date: (orderType) {
+        orderType.when(
+          ascending: () {
+          notes.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+          },
+          descending: () {
+            notes.sort((a, b) => -a.timestamp.compareTo(b.timestamp));
+          },
+        );
+      },
+      color: (orderType) {
+        orderType.when(
+          ascending: () {
+          notes.sort((a, b) => a.color.compareTo(b.color));
+          },
+          descending: () {
+            notes.sort((a, b) => -a.color.compareTo(b.color));
+          },
+        );
+      },
+    );
+
+    
     return notes;
   }
 }
