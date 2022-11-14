@@ -2,12 +2,12 @@ import 'package:clean_archi_memo/domain/repository/note_repository.dart';
 
 import '../model/note.dart';
 
-class GetNote {
+class UpadateNoteUseCase {
   final NoteRepository repository;
 
-  GetNote(this.repository);
+  UpadateNoteUseCase(this.repository);
 
-  Future<Note?> call(int id) async {
-    return await repository.getNoteById(id);
+  Future<void> call(Note note) async {
+    await repository.updateNote(note);
   }
 }

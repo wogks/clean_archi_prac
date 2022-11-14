@@ -1,13 +1,15 @@
-
-import 'package:clean_archi_memo/domain/repository/note_repository.dart';
+import 'package:clean_archi_memo/domain/use_case/add_note_use_case.dart';
+import 'package:clean_archi_memo/domain/use_case/delete_note_use_case.dart';
+import 'package:clean_archi_memo/domain/use_case/use_cases.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_event.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_state.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/note.dart';
+import '../../domain/use_case/get_notes_use_case.dart';
 
 class NotesViewModel with ChangeNotifier {
-  final NoteRepository repository;
+ final UseCases useCases;
 
   NotesState _state = const NotesState();
   NotesState get state => _state;
@@ -20,7 +22,7 @@ class NotesViewModel with ChangeNotifier {
 
   Note? _recentlyDeletedNote;
 
-  NotesViewModel(this.repository){
+  NotesViewModel(this.useCases){
 _loadNotes();
   }
 
@@ -34,13 +36,13 @@ _loadNotes();
   }
 
   Future<void> _loadNotes() async {
-    List<Note> notes = await repository.getNotes();
+    List<Note> notes = await useCases.getnotes();
     _state = state.copyWith(notes: notes);
     notifyListeners();
   }
 
   Future<void> _deleteNote(Note note) async {
-    await repository.deleteNote(note);
+    await useCases.deleteNote(note);
 
     //마지막에 델리트된 애를 여기다가 저장
     _recentlyDeletedNote = note;
@@ -53,7 +55,7 @@ _loadNotes();
   //로직: 델리트한 노트를 따로 저장함
   Future<void> _restoreNote() async {
     if (_recentlyDeletedNote != null) {
-      await repository.insertNote(_recentlyDeletedNote!);
+      await useCases.addNote(_recentlyDeletedNote!);
       _recentlyDeletedNote = null; //리센틀리를 다시 비워줌
 
       _loadNotes(); //다시 로드
