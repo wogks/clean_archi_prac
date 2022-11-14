@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 import '../../domain/model/note.dart';
 
 class NotesViewModel with ChangeNotifier {
- final UseCases useCases;
+  final UseCases useCases;
 
-  NotesState _state = const NotesState(notes: [],noteOrder: NoteOrderDate(OrderType.descending()));
+  NotesState _state = const NotesState(
+      notes: [], noteOrder: NoteOrderDate(OrderType.descending()));
   NotesState get state => _state;
 
 //로드 노트에서 가져오면 데이터를 저장할 공간이 필요
@@ -21,17 +22,24 @@ class NotesViewModel with ChangeNotifier {
 
   Note? _recentlyDeletedNote;
 
-  NotesViewModel(this.useCases){
-_loadNotes();
+  NotesViewModel(this.useCases) {
+    _loadNotes();
   }
 
   //이 화면에 발생하는 일들은 온이벤트 메서드를 통해서만 실행한다.
   void onEvent(NotesEvent event) {
     //when을 쓴다(freezed 제공)
     event.when(
-        loadNotes: _loadNotes,
-        deleteNote: _deleteNote,
-        restoreNote: _restoreNote);
+      loadNotes: _loadNotes,
+      deleteNote: _deleteNote,
+      restoreNote: _restoreNote,
+      changeOrder: (NoteOrder noteOrder) {
+        _state = state.copyWith(
+          noteOrder: noteOrder,
+        );
+        _loadNotes();
+      },
+    );
   }
 
   Future<void> _loadNotes() async {

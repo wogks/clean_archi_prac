@@ -1,9 +1,11 @@
 import 'package:clean_archi_memo/presentation/add_edit_note/add_edit_note_screen.dart';
+import 'package:clean_archi_memo/presentation/notes/components/order_section.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_event.dart';
 import 'package:clean_archi_memo/presentation/notes/notes_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../domain/use_case/util/note_order.dart';
 import 'components/note_item.dart';
 
 class NotesScreen extends StatelessWidget {
@@ -35,8 +37,15 @@ class NotesScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: state.notes
+        child: ListView(children: [
+          OrderSection(
+            noteOrder: state.noteOrder,
+            onOrderChanged: (NoteOrder noteOrder) {
+              viewModel.onEvent(NotesEvent.changeOrder(noteOrder));
+            }
+            ,
+          ),
+          ...state.notes
               .map(
                 (note) => GestureDetector(
                   onTap: () async {
@@ -71,7 +80,7 @@ class NotesScreen extends StatelessWidget {
                 ),
               )
               .toList(),
-        ),
+        ]),
       ),
     );
   }
