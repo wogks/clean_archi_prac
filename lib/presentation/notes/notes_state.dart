@@ -12,6 +12,7 @@ class NotesState with _$NotesState {
   const factory NotesState({
     required List<Note> notes,
     required NoteOrder noteOrder,
+    required bool isOrderSectionVisible,
   }) = _NotesState;
 
 //factory NotesState.fromJson(Map<String, Object?> json) => _$NotesStateFromJson(json); json필요없음, 여기서 에러

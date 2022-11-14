@@ -11,7 +11,10 @@ class NotesViewModel with ChangeNotifier {
   final UseCases useCases;
 
   NotesState _state = const NotesState(
-      notes: [], noteOrder: NoteOrderDate(OrderType.descending()));
+    notes: [],
+    noteOrder: NoteOrderDate(OrderType.descending()),
+    isOrderSectionVisible: false,
+  );
   NotesState get state => _state;
 
 //로드 노트에서 가져오면 데이터를 저장할 공간이 필요
@@ -38,7 +41,11 @@ class NotesViewModel with ChangeNotifier {
           noteOrder: noteOrder,
         );
         _loadNotes();
-      },
+      }, 
+      toggleOrderSection: () { 
+        _state = state.copyWith(isOrderSectionVisible:!state.isOrderSectionVisible);
+        notifyListeners();
+       },
     );
   }
 

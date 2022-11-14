@@ -20,7 +20,9 @@ class NotesScreen extends StatelessWidget {
         elevation: 0,
         title: const Text('MY NOTE'),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.sort)),
+          IconButton(onPressed: () {
+            viewModel.onEvent(const NotesEvent.toggleOrderSection());
+          }, icon: const Icon(Icons.sort)),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -38,12 +40,14 @@ class NotesScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(children: [
-          OrderSection(
-            noteOrder: state.noteOrder,
-            onOrderChanged: (NoteOrder noteOrder) {
-              viewModel.onEvent(NotesEvent.changeOrder(noteOrder));
-            }
-            ,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: state.isOrderSectionVisible ? OrderSection(
+              noteOrder: state.noteOrder,
+              onOrderChanged: (NoteOrder noteOrder) {
+                viewModel.onEvent(NotesEvent.changeOrder(noteOrder));
+              },
+            ) : Container(),
           ),
           ...state.notes
               .map(

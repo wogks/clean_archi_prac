@@ -1,3 +1,4 @@
+import 'package:clean_archi_memo/ui/colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/model/note.dart';
@@ -22,14 +23,18 @@ class NoteItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  note.title, style: Theme.of(context).textTheme.headline6,
+                  note.title, style: Theme.of(context).textTheme.headline6!.apply(
+                    color: dartGray,
+                  ),
                   maxLines: 1, // 한줄
                   overflow: TextOverflow.ellipsis, // 한줄 넘어가면 ...으로 됨
                 ),
                 const SizedBox(height: 8),
                 Text(
                   note.content,
-                  style: Theme.of(context).textTheme.bodyText2,
+                  style: Theme.of(context).textTheme.bodyText2!.apply(
+                    color: dartGray,
+                  ),
                   maxLines: 10,
                   overflow: TextOverflow.ellipsis,
                 ),
